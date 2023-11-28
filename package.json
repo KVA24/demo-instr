@@ -1,0 +1,30 @@
+{
+  "name": "wiinvent_sdk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "www/js/wii-sdk.js",
+  "scripts": {
+    "pro": "webpack --config webpackPro.config.js",
+    "dev": "webpack --config webpackDev.config.js",
+    "watch": "webpack --config webpackDev.config.js --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "babel-loader": "^8.2.3",
+    "javascript-obfuscator": "^4.0.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-obfuscator": "^3.5.1"
+  },
+  "dependencies": {
+    "@boxslider/slider": "^1.2.0",
+    "ima-ad-player": "^0.5.4",
+    "lory.js": "^1.6.8",
+    "md5": "^2.3.0"
+  }
+}

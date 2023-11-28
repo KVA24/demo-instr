@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Index</title>
+  <style>
+      #videoId {
+          position: absolute;
+          top: 0;
+          height: 100% !important;
+          width: 100%;
+          box-sizing: border-box;
+          overflow: hidden;
+          z-index: 20;
+      }
+
+      /*.wii-ad * {*/
+      /*  box-sizing: border-box;*/
+      /*  z-index: 20;*/
+      /*}*/
+  </style>
+  <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+  <script src="https://unpkg.com/video.js/dist/video.js"></script>
+  <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+</head>
+
+<body style="margin: 0; " cz-shortcut-listen="true">
+
+<video id="videojs-player" controls playsinline muted class="video-js vjs-default-skin vjs-big-play-centered wrap">
+  <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
+</video>
+
+<script src=" ./js/wi-sdk.js">
+</script>
+
+<script>
+  const player = videojs('videojs-player');
+  const wiinsdk = new wii.OverlaySdk({
+    domId: "videojs-player",
+    playerType: 'VIDEO_JS',
+    channelId: '2',
+    streamId: '604468',
+    deviceType: 'DESKTOP',
+    env: 'DEV',
+    contentType: 'VOD',
+    platform: 'TV',
+    thirdPartyToken: 'JWT ',
+    accountId: 14,
+
+    onTokenExpire: function () {
+      //token expire
+    },
+    onUserLogin: function () {
+      //require login
+    }
+  })
+
+  player.one('play', () => wiinsdk.start())
+  player.on('ended', () => wiinsdk.stop());
+  player.on('pause', () => wiinsdk.hide());
+  player.on('play', () => wiinsdk.show())
+  player.on('error', () => wiinsdk.stop());
+  player.on('timeupdate', () => wiinsdk.timeUpdate(player.currentTime()));
+</script>
+
+
+</body>
+
+</html>

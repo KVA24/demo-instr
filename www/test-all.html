@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Index</title>
+        <style>
+            #videojs-player {
+                width: 100%;
+            }
+        </style>
+        <link
+            href="https://unpkg.com/video.js/dist/video-js.css"
+            rel="stylesheet"
+        />
+        <script src="https://unpkg.com/video.js/dist/video.js"></script>
+        <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/2.5.12/controls.css"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/2.5.12/shaka-player.ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/3.0.0/shaka-player.compiled.js"></script>
+        <script
+            defer
+            src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"
+        ></script>
+    </head>
+
+    <body style="margin: 0" cz-shortcut-listen="true">
+        <div id="videoId">
+            <video
+                id="videojs-player"
+                controls
+                playsinline
+                muted
+                class="video-js vjs-default-skin vjs-big-play-centered wrap"
+            >
+                <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" />
+            </video>
+        </div>
+
+        <div style="margin-top: 30px">
+            <button class="source" id="source_one" onclick="changeToSourceOne()">
+                Source 1
+            </button>
+            <button class="source" id="source_two" onclick="changeToSourceTwo()">
+                Source 2
+            </button>
+        </div>
+
+        <!--<div id="videoIdShaka" STYLE="margin-top: 50px">-->
+        <!--    <video data-shaka-player class="teste" id="shaka-video" width="960px" height="400px"-->
+        <!--           controls playsinline muted>-->
+        <!--        <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">-->
+        <!--    </video>-->
+        <!--</div>-->
+
+        <script src=" ./js/wii-sdk.js"></script>
+        <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+        <script>
+            var wiiSdk = [];
+            const player = videojs("videojs-player");
+
+            function changeToSourceOne() {
+                wiiSdk = new WI.InstreamSdk({
+                    env: WI.Environment.SANDBOX,
+                    tenantId: 14,
+                    deviceType: WI.DeviceType.WEB,
+                    domId: "videoId",
+                    player: player,
+                    playerType: "VIDEO",
+                    channelId: "2",
+                    streamId: "999999",
+                    partnerSkipOffset: 0,
+                    vastLoadTimeout: 10,
+                    mediaLoadTimeout: 10,
+                    bufferingVideoTimeout: 15,
+                    alwaysCustomSkip: true,
+                    isAutoRequestFocus: false,
+                    bitrate: 1024,
+                });
+            }
+
+            function changeToSourceTwo() {
+                wiiSdk = new WI.InstreamSdk({
+                    env: WI.Environment.SANDBOX,
+                    tenantId: 14,
+                    deviceType: WI.DeviceType.WEB,
+                    domId: "videoId",
+                    player: player,
+                    playerType: "VIDEO",
+                    channelId: "277",
+                    streamId: "667788",
+                    partnerSkipOffset: 0,
+                    vastLoadTimeout: 10,
+                    mediaLoadTimeout: 10,
+                    bufferingVideoTimeout: 15,
+                    alwaysCustomSkip: true,
+                    isAutoRequestFocus: false,
+                    bitrate: 1024,
+                });
+            }
+
+            player.one("loadeddata", () => {
+                wiiSdk = new WI.InstreamSdk({
+                    env: WI.Environment.SANDBOX,
+                    tenantId: 14,
+                    deviceType: WI.DeviceType.WEB,
+                    domId: "videoId",
+                    player: player,
+                    playerType: "VIDEO",
+                    channelId: "277",
+                    streamId: "667788",
+                    partnerSkipOffset: 0,
+                    vastLoadTimeout: 10,
+                    mediaLoadTimeout: 10,
+                    bufferingVideoTimeout: 15,
+                    alwaysCustomSkip: true,
+                    isAutoRequestFocus: false,
+                    bitrate: 1024,
+                });
+            });
+
+            // player.on('resize', () => wiiSdk.changeSize())
+
+            // =============================================================================================================================================================== //
+
+            // const shaka = document.getElementById('videoIdShaka')
+            //
+            // var wiiSdkSk = new WI.InstreamSdk({
+            //   env: WI.Environment.SANDBOX,
+            //   tenantId: 14,
+            //   deviceType: WI.DeviceType.WEB,
+            //   domId: 'videoIdShaka',
+            //   player: shaka,
+            //   playerType: "SHAKA",
+            //   channelId: '2',
+            //   streamId: '999999',
+            //   partnerSkipOffset: 0,
+            //   vastLoadTimeout: 10,
+            //   mediaLoadTimeout: 10,
+            //   bufferingVideoTimeout: 15,
+            //   alwaysCustomSkip: true,
+            //   isAutoRequestFocus: false,
+            //   bitrate: 1024
+            // });
+            //
+            // document.addEventListener('shaka-ui-loaded', wiiSdkSk.start());
+
+            // =============================================================================================================================================================== //
+
+            window.addEventListener("message", function (e) {
+                if (
+                    [
+                        "REQUEST",
+                        "LOADED",
+                        "START",
+                        "PAUSED",
+                        "RESUMED",
+                        "ERROR",
+                        "PLAYER_ERROR",
+                        "CLICK",
+                        "IMPRESSION",
+                        "SKIPPED",
+                        "COMPLETE",
+                        "DESTROY",
+                        "FULLSCREEN",
+                        "END",
+                        "All_ADS_COMPLETE",
+                    ].includes(e.data.type)
+                ) {
+                    console.log("mmmm", e);
+                }
+
+                if (e.data.type === "REQUEST") {
+                    console.log("==== REQUEST ====");
+                }
+                if (e.data.type === "LOADED") {
+                    console.log("==== LOADED ====");
+                }
+                if (e.data.type === "PLAYER_ERROR") {
+                    console.log("==== PLAYER_ERROR ====");
+                }
+                if (e.data.type === "ERROR") {
+                    console.log("==== ERROR ====");
+                }
+                if (e.data.type === "BEGIN") {
+                    console.log("==== BEGIN ====");
+                }
+                if (e.data.type === "START") {
+                    console.log("==== START ====");
+                }
+                if (e.data.type === "PAUSED") {
+                    console.log("==== PAUSED ====");
+                }
+                if (e.data.type === "RESUMED") {
+                    console.log("==== RESUMED ====");
+                }
+                if (e.data.type === "CLICK") {
+                    console.log("==== CLICK ====");
+                }
+                if (e.data.type === "IMPRESSION") {
+                    console.log("==== IMPRESSION ====");
+                }
+                if (e.data.type === "SKIPPED") {
+                    console.log("==== SKIPPED ====");
+                }
+                if (e.data.type === "END") {
+                    console.log("==== END ====");
+                }
+                if (e.data.type === "COMPLETE") {
+                    console.log("==== COMPLETE ====");
+                }
+                if (e.data.type === "All_ADS_COMPLETE") {
+                    console.log("==== All_ADS_COMPLETE ====");
+                }
+                if (e.data.type === "DESTROY") {
+                    console.log("==== DESTROY ====");
+                }
+                if (e.data.type === "FULLSCREEN") {
+                    console.log("==== FULLSCREEN ====");
+                }
+            });
+
+            // const wiinsdk = new WI.OverlaySdk({
+            //   domId: "videojs-player",
+            //   playerType: WI.PlayerType.VIDEO_JS,
+            //   channelId: '2',
+            //   streamId: '604468',
+            //   deviceType: WI.DeviceType.WEB,
+            //   env: WI.Environment.SANDBOX,
+            //   contentType: WI.ContentType.VOD,
+            //   thirdPartyToken: 'JWT ',
+            //   tenantId: 14,
+            //
+            //   onTokenExpire: function () {
+            //     //token expire
+            //   },
+            //   onUserLogin: function () {
+            //     //require login
+            //   }
+            // })
+            //
+            // player.one('play', () => wiinsdk.start())
+            // player.on('ended', () => wiinsdk.stop());
+            // player.on('pause', () => wiinsdk.hide());
+            // player.on('play', () => wiinsdk.show())
+            // player.on('error', () => wiinsdk.stop());
+            // player.on('timeupdate', () => wiinsdk.timeUpdate(player.currentTime()));
+        </script>
+    </body>
+</html>

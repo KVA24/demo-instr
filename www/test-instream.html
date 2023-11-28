@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Index</title>
+  <style>
+   
+
+    /*.wii-ad * {*/
+    /*  box-sizing: border-box;*/
+    /*  z-index: 20;*/
+    /*}*/
+  </style>
+  <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+  <script src="https://unpkg.com/video.js/dist/video.js"></script>
+  <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+</head>
+
+<body style="margin: 0; " cz-shortcut-listen="true">
+
+  <div id="videoId">
+    <video id="videojs-player" controls playsinline muted class="video-js vjs-default-skin vjs-big-play-centered wrap">
+      <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
+    </video>
+
+  </div>
+
+  <script src=" ./js/wi-sdk.js">
+  </script>
+
+  <script>
+    const player = videojs('videojs-player');
+    player.one('play', () => {
+      const wiiSdk = new wii.InstreamSdk({
+        env: "SANDBOX",
+        tenantId: 14,
+        platform: 'TV',
+        domId: 'videoId',
+        player: player,
+        channelId: 2,
+        streamId: 604468,
+        vastLoadTimeout: 10,
+        mediaLoadTimeout: 10,
+        bufferingVideoTimeout: 15,
+        skipAdsDuration: 5
+      });
+    })
+
+  </script>
+
+
+</body>
+
+</html>
